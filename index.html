@@ -20,9 +20,19 @@
     <div class="container">
         <h1>Insertion Sort Visualizer</h1>
         <div id="bars"></div>
+        <div style="text-align:center; margin-bottom: 20px;">
+            <label for="sizeRange">Array Size:</label>
+            <input type="range" id="sizeRange" min="10" max="100" value="30" style="width: 200px;">
+            <span id="sizeValue">30</span>
+            <label for="speedRange" style="margin-left:20px;">Animation Speed:</label>
+            <input type="range" id="speedRange" min="10" max="1000" value="150" style="width: 200px;">
+            <span id="speedValue">150ms</span>
+        </div>
         <div style="text-align:center;">
             <button id="startBtn">Start Sort</button>
             <button id="shuffleBtn">Shuffle</button>
+            <button id="reverseBtn">Reverse</button>
+            <button id="almostSortedBtn">Almost Sorted</button>
         </div>
     </div>
     <script src="visualizer.js"></script>
