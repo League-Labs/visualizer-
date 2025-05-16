@@ -44,15 +44,23 @@ function almostSortedArray() {
     renderBars(array);
 }
 
-function renderBars(arr, activeIdx = -1, sortedIdx = -1) {
+function renderBars(arr, activeIdx = -1, sortedIdx = -1, compareIdx = -1) {
+    barsContainer.childNodes.forEach((bar, idx) => {
+        if (arr[idx] !== undefined) {
+            bar.style.height = arr[idx] + 'px';
+            bar.className = 'bar';
+            if (idx === activeIdx) bar.classList.add('active');
+            if (idx <= sortedIdx) bar.classList.add('sorted');
+            if (idx === compareIdx) bar.classList.add('compare');
+        }
+    });
+}
+
+function createBars(arr) {
     barsContainer.innerHTML = '';
-    arr.forEach((value, idx) => {
+    arr.forEach(() => {
         const bar = document.createElement('div');
         bar.className = 'bar';
-        bar.style.height = value + 'px';
-        bar.style.transition = `height ${ANIMATION_SPEED/1000}s, background 0.3s`;
-        if (idx === activeIdx) bar.classList.add('active');
-        if (idx <= sortedIdx) bar.classList.add('sorted');
         barsContainer.appendChild(bar);
     });
 }
@@ -64,19 +72,22 @@ async function insertionSortVisual(arr) {
     almostSortedBtn.disabled = true;
     sizeRange.disabled = true;
     speedRange.disabled = true;
+    createBars(arr);
+    renderBars(arr);
+    await sleep(ANIMATION_SPEED);
     for (let i = 1; i < arr.length; i++) {
         let key = arr[i];
         let j = i - 1;
-        renderBars(arr, i, i-1);
+        renderBars(arr, i, i-1, j);
         await sleep(ANIMATION_SPEED);
         while (j >= 0 && arr[j] > key) {
             arr[j + 1] = arr[j];
-            j = j - 1;
-            renderBars(arr, j+1, i-1);
+            renderBars(arr, i, i-1, j);
             await sleep(ANIMATION_SPEED);
+            j = j - 1;
         }
         arr[j + 1] = key;
-        renderBars(arr, j+1, i);
+        renderBars(arr, i, i, j+1);
         await sleep(ANIMATION_SPEED);
     }
     renderBars(arr, -1, arr.length-1);
